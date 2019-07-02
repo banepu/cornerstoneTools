@@ -41,7 +41,7 @@ let configuration = {
     ctrl: false,
     alt: false
   },
-  activePencilMode: false,
+  activePencilMode: true,
   spacing: 5,
   activeHandleRadius: 3,
   completeHandleRadius: 6,
