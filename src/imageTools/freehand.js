@@ -41,7 +41,7 @@ let configuration = {
     ctrl: false,
     alt: false
   },
-  activePencilMode: true,
+  activePencilMode: false,
   spacing: 5,
   activeHandleRadius: 3,
   completeHandleRadius: 6,
@@ -181,9 +181,9 @@ function mouseDownActivateCallback (e) {
     return;
   }
 
-  if (eventData.event.shiftKey) {
+  // if (eventData.event.shiftKey) {
     config.activePencilMode = true;
-  }
+  // }
 
   startDrawing(eventData);
   addPoint(eventData);
@@ -328,7 +328,7 @@ function endDrawing (eventData, handleNearby) {
   // Reset the current handle
   config.currentHandle = 0;
   config.currentTool = -1;
-  // config.activePencilMode = false;
+  config.activePencilMode = false;
   data.canComplete = false;
 
   if (deleteData) {
