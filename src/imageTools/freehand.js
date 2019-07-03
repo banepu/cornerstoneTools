@@ -181,9 +181,10 @@ function mouseDownActivateCallback (e) {
     return;
   }
 
-  if (eventData.event.shiftKey) {
+  // BAM: Activate drawing when mouse click is down. No need for SHIFT key
+  // if (eventData.event.shiftKey) {
     config.activePencilMode = true;
-  }
+  // }
 
   startDrawing(eventData);
   addPoint(eventData);
@@ -614,6 +615,7 @@ function mouseUpCallback (e) {
   const eventData = e.detail;
   const element = eventData.element;
   const toolData = getToolState(eventData.element, toolType);
+  const config = freehand.getConfiguration();
 
   element.removeEventListener(EVENTS.MOUSE_UP, mouseUpCallback);
   element.removeEventListener(EVENTS.MOUSE_DRAG, mouseDragCallback);
@@ -625,6 +627,9 @@ function mouseUpCallback (e) {
     return;
   }
 
+  // BAM: When the mouse click is released, stop drawing
+  config.activePencilMode = false;
+  
   const dropped = dropObject(e, toolData);
 
   if (dropped === 'handle') {
