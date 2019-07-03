@@ -328,7 +328,7 @@ function endDrawing (eventData, handleNearby) {
   // Reset the current handle
   config.currentHandle = 0;
   config.currentTool = -1;
-  config.activePencilMode = false;
+  // config.activePencilMode = false;
   data.canComplete = false;
 
   if (deleteData) {
