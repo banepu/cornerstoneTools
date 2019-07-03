@@ -182,9 +182,9 @@ function mouseDownActivateCallback (e) {
   }
 
   // BAM: Activate drawing when mouse click is down. No need for SHIFT key
-  if (eventData.event.shiftKey) {
+  //if (eventData.event.shiftKey) {
     config.activePencilMode = true;
-  }
+  ///}
 
   startDrawing(eventData);
   addPoint(eventData);
