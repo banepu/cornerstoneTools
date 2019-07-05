@@ -36,13 +36,12 @@ let configuration = {
       }
     }
   },
-  mouseButtonState: 'up', // BAM
   keyDown: {
     shift: false,
     ctrl: false,
     alt: false
   },
-  activePencilMode: false,
+  activePencilMode: true, // BAM - activate pencil more by default
   spacing: 5,
   activeHandleRadius: 3,
   completeHandleRadius: 6,
@@ -86,7 +85,7 @@ function createNewMeasurement () {
 * @param {HTMLElement} element - the element where the image is drawn
 * @param {Object} data - The tool data object.
 * @param {{x:Number, y:Number}} coords - coordintates of the point
-* @return {Boolean} True if provided coordinates are near the tool handle; Otherwise, false. 
+* @return {Boolean} True if provided coordinates are near the tool handle; Otherwise, false.
 */
 function pointNearTool (element, data, coords) {
   const isPointNearTool = pointNearHandle(element, data, coords);
@@ -182,10 +181,10 @@ function mouseDownActivateCallback (e) {
     return;
   }
 
-  // BAM: Activate drawing when mouse click is down. No need for SHIFT key
-  if (config.mouseButtonState === 'down') {
+  // BAM - Making pencil mode active by default
+  /* if (eventData.event.shiftKey) {
     config.activePencilMode = true;
-  }
+  } */
 
   startDrawing(eventData);
   addPoint(eventData);
@@ -330,8 +329,7 @@ function endDrawing (eventData, handleNearby) {
   // Reset the current handle
   config.currentHandle = 0;
   config.currentTool = -1;
-  config.activePencilMode = false;
-  config.mouseButtonState = 'up'; // BAM
+  // config.activePencilMode = false; BAM - keep pencil mode active
   data.canComplete = false;
 
   if (deleteData) {
@@ -409,8 +407,6 @@ function mouseDownCallback (e) {
     const toolData = getToolState(eventData.element, toolType);
 
     if (currentTool >= 0 && toolData.data[currentTool].active) {
-      // BAM: Activate pencil mode when mouse down
-      config.mouseButtonState = 'down';
       mouseDownActive(e, toolData, currentTool);
     }
   }
@@ -619,7 +615,6 @@ function mouseUpCallback (e) {
   const eventData = e.detail;
   const element = eventData.element;
   const toolData = getToolState(eventData.element, toolType);
-  const config = freehand.getConfiguration();
 
   element.removeEventListener(EVENTS.MOUSE_UP, mouseUpCallback);
   element.removeEventListener(EVENTS.MOUSE_DRAG, mouseDragCallback);
@@ -631,9 +626,6 @@ function mouseUpCallback (e) {
     return;
   }
 
-  // BAM: When the mouse click is released, stop drawing
-  config.mouseButtonState = 'up';
-  
   const dropped = dropObject(e, toolData);
 
   if (dropped === 'handle') {
