@@ -36,6 +36,7 @@ let configuration = {
       }
     }
   },
+  mouseButtonState: 'up', // BAM
   keyDown: {
     shift: false,
     ctrl: false,
@@ -182,9 +183,9 @@ function mouseDownActivateCallback (e) {
   }
 
   // BAM: Activate drawing when mouse click is down. No need for SHIFT key
-  //if (eventData.event.shiftKey) {
+  if (config.mouseButtonState === 'down') {
     config.activePencilMode = true;
-  ///}
+  }
 
   startDrawing(eventData);
   addPoint(eventData);
@@ -330,6 +331,7 @@ function endDrawing (eventData, handleNearby) {
   config.currentHandle = 0;
   config.currentTool = -1;
   config.activePencilMode = false;
+  config.mouseButtonState = 'up'; // BAM
   data.canComplete = false;
 
   if (deleteData) {
@@ -371,8 +373,6 @@ function mouseDownActive (e, toolData, currentTool) {
     const lastHandlePlaced = config.currentHandle;
 
     endDrawing(eventData, lastHandlePlaced);
-  } else if (config.activePencilMode) { // BAM: Start drawing if pencil mode is enabled
-    startDrawing(eventData);
   } else if (handleNearby === null) {
     addPoint(eventData);
   }
@@ -410,7 +410,7 @@ function mouseDownCallback (e) {
 
     if (currentTool >= 0 && toolData.data[currentTool].active) {
       // BAM: Activate pencil mode when mouse down
-      config.activePencilMode = true;
+      config.mouseButtonState = 'down';
       mouseDownActive(e, toolData, currentTool);
     }
   }
@@ -632,12 +632,11 @@ function mouseUpCallback (e) {
   }
 
   // BAM: When the mouse click is released, stop drawing
-  // config.activePencilMode = false;
+  config.mouseButtonState = 'up';
   
   const dropped = dropObject(e, toolData);
 
-  if ((dropped === 'handle') || (config.activePencilMode)) {
-    config.activePencilMode = false;
+  if (dropped === 'handle') {
     endDrawing(eventData);
   }
 
