@@ -632,7 +632,8 @@ function mouseUpCallback (e) {
   
   const dropped = dropObject(e, toolData);
 
-  if (dropped === 'handle') {
+  if ((dropped === 'handle') || (config.activePencilMode === true)) {
+    config.activePencilMode = false;
     endDrawing(eventData);
   }
 
