@@ -371,6 +371,8 @@ function mouseDownActive (e, toolData, currentTool) {
     const lastHandlePlaced = config.currentHandle;
 
     endDrawing(eventData, lastHandlePlaced);
+  } else if (config.activePencilMode) { // BAM: Start drawing if pencil mode is enabled
+    startDrawing(eventData);
   } else if (handleNearby === null) {
     addPoint(eventData);
   }
@@ -407,6 +409,8 @@ function mouseDownCallback (e) {
     const toolData = getToolState(eventData.element, toolType);
 
     if (currentTool >= 0 && toolData.data[currentTool].active) {
+      // BAM: Activate pencil mode when mouse down
+      config.activePencilMode = true;
       mouseDownActive(e, toolData, currentTool);
     }
   }
@@ -632,7 +636,7 @@ function mouseUpCallback (e) {
   
   const dropped = dropObject(e, toolData);
 
-  if ((dropped === 'handle') || (config.activePencilMode === true)) {
+  if ((dropped === 'handle') || (config.activePencilMode)) {
     config.activePencilMode = false;
     endDrawing(eventData);
   }
