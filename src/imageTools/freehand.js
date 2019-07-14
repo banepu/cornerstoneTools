@@ -41,7 +41,8 @@ let configuration = {
     ctrl: false,
     alt: false
   },
-  activePencilMode: true, // BAM - activate pencil more by default
+  activePencilMode: true, // BAM - activate pencil more by default,
+  drawMode: 'move', // BAM - drag: draw while mouse button pressed, move: click-leave-draw
   spacing: 5,
   activeHandleRadius: 3,
   completeHandleRadius: 6,
@@ -401,6 +402,11 @@ function mouseDownCallback (e) {
   const config = freehand.getConfiguration();
   const currentTool = config.currentTool;
 
+  // BAM - add mouse drag event listener to enable drawing while mouse button pressed
+  if(config.drawMode === 'drag') {
+      element.addEventListener(EVENTS.MOUSE_DRAG, mouseDragCallback);
+  }
+
   if (currentTool < 0) {
     mouseDownPassive(e);
   } else {
@@ -463,7 +469,8 @@ function mouseMoveActive (eventData, toolData) {
   getMouseLocation(eventData);
   checkInvalidHandleLocation(data);
 
-  if (config.activePencilMode) {
+  // BAM - Enable drawing only if the mode is set to "move"
+  if (config.activePencilMode && (config.drawMode === 'move')) {
     addPointPencilMode(eventData, data.handles);
   } else {
     // No snapping in activePencilMode mode
@@ -599,12 +606,38 @@ function mouseDragCallback (e) {
 
   // Check if the tool is active
   if (config.currentTool >= 0) {
-    dragObject(currentHandle, data);
+    // BAM - Enable drawing while mouse button pressed if in drag mode
+    if(config.drawMode === 'drag') {
+        mouseDragActive(eventData, toolData);
+    }
+    (0, _dragObject2.default)(currentHandle, data);
   }
 
   // Update the image
   external.cornerstone.updateImage(eventData.element);
 }
+
+/**
+* BAM
+* Event handler called by mouseDragCallback when the tool is currently active.
+*
+* @param {Object} eventData - data object associated with an event.
+* @param {Object} toolData - data object associated with the freehand tool.
+*/
+function mouseDragActive(eventData, toolData) {
+  var config = freehand.getConfiguration();
+  var currentTool = config.currentTool;
+  var element = eventData.element;
+  var data = toolData.data[currentTool];
+  var coords = eventData.currentPoints.canvas;
+
+  // Set the mouseLocation handle
+  getMouseLocation(eventData);
+  checkInvalidHandleLocation(data);
+  addPointPencilMode(eventData, data.handles);
+
+}
+
 
 /**
 * Event handler for MOUSE_UP event.
