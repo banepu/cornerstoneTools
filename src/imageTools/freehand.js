@@ -610,7 +610,7 @@ function mouseDragCallback (e) {
     if(config.drawMode === 'drag') {
         mouseDragActive(eventData, toolData);
     }
-    (0, _dragObject2.default)(currentHandle, data);
+    dragObject(currentHandle, data);
   }
 
   // Update the image
@@ -625,11 +625,11 @@ function mouseDragCallback (e) {
 * @param {Object} toolData - data object associated with the freehand tool.
 */
 function mouseDragActive(eventData, toolData) {
-  var config = freehand.getConfiguration();
-  var currentTool = config.currentTool;
-  var element = eventData.element;
-  var data = toolData.data[currentTool];
-  var coords = eventData.currentPoints.canvas;
+  const config = freehand.getConfiguration();
+  const currentTool = config.currentTool;
+  const element = eventData.element;
+  const data = toolData.data[currentTool];
+  const coords = eventData.currentPoints.canvas;
 
   // Set the mouseLocation handle
   getMouseLocation(eventData);
