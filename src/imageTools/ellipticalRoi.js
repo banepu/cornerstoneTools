@@ -144,8 +144,8 @@ function onImageRendered (e) {
 
       // Draw the ellipse on the canvas
       // BAM - Add fill color to the polygon
-      const fillColor = toolColors.getFillColor();
-      drawEllipse(context, element, data.handles.start, data.handles.end, { color, fillColor });
+      const fillStyle = toolColors.getFillColor();
+      drawEllipse(context, element, data.handles.start, data.handles.end, { color, fillStyle });
 
       // If the tool configuration specifies to only draw the handles on hover / active,
       // Follow this logic

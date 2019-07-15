@@ -160,7 +160,9 @@ function onImageRendered (e) {
       const color = toolColors.getColorIfActive(data);
 
       // Draw the rectangle on the canvas
-      drawRect(context, element, data.handles.start, data.handles.end, { color });
+      // BAM - Add fill color to the polygon
+      const fillStyle = toolColors.getFillColor();
+      drawRect(context, element, data.handles.start, data.handles.end, { color, fillStyle });
 
       // If the tool configuration specifies to only draw the handles on hover / active,
       // Follow this logic
