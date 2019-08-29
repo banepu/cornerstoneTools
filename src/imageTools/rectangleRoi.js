@@ -197,8 +197,10 @@ function onImageRendered (e) {
         data.handles.textBox.y = (data.handles.start.y + data.handles.end.y) / 2;
       }
 
+      /* BAM - Don't draw the textbox for now
       drawLinkedTextBox(context, element, data.handles.textBox, text,
         data.handles, textBoxAnchorPoints, color, lineWidth, 0, true);
+      */
     });
   }
 

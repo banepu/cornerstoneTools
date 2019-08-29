@@ -937,8 +937,10 @@ function onImageRendered (e) {
 
         const text = textBoxText(data);
 
+        /* BAM - Don't draw the textbox for now
         drawLinkedTextBox(context, element, data.textBox, text,
           data.handles, textBoxAnchorPoints, color, lineWidth, 0, true);
+        */
       }
     });
   }
